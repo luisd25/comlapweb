@@ -198,7 +198,7 @@ export const PAGES_MENU = [
         path: 'maps',
         data: {
           menu: {
-            title: 'Maps',
+            title: 'Epidemias',
             icon: 'ion-ios-location-outline',
             selected: false,
             expanded: false,
@@ -324,7 +324,15 @@ export const PAGES_MENU = [
             target: '_blank'
           }
         }
-      }
+      },
+        {
+            path: 'googlemaps',
+            data: {
+              menu: {
+                title: 'Epidemias',
+              }
+            }
+          }
     ]
   }
 ];

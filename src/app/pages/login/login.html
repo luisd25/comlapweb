@@ -1,7 +1,7 @@
 <div class="auth-main">
   <div class="auth-block">
-    <h1>Sign in to ng2-admin</h1>
-    <a routerLink="/register" class="auth-link">New to ng2-admin? Sign up!</a>
+    <h1>COMLAP</h1>
+    <a routerLink="/register" class="auth-link">Registrarse</a>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
       <div class="form-group row" [ngClass]="{'has-error': (!email.valid && email.touched), 'has-success': (email.valid && email.touched)}">
@@ -21,12 +21,12 @@
       <div class="form-group row">
         <div class="offset-sm-2 col-sm-10">
           <button [disabled]="!form.valid" type="submit" class="btn btn-default btn-auth">Sign in</button>
-          <a routerLink="/login" class="forgot-pass">Forgot password?</a>
+          <a routerLink="/login" class="forgot-pass">Recordar contraseña</a>
         </div>
       </div>
     </form>
 
-    <div class="auth-sep"><span><span>or Sign in with one click</span></span></div>
+    <div class="auth-sep"><span><span>Logearte con un solo click</span></span></div>
 
     <div class="al-share-auth">
       <ul class="al-share clearfix">
