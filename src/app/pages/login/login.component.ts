@@ -16,13 +16,13 @@ export class Login {
   public email:AbstractControl;
   public password:AbstractControl;
   public submitted:boolean = false;
-  public username:string;
+  // public username:string;
   private items:any;
 
   constructor(fb:FormBuilder,private backandService:BackandService) {
     this.form = fb.group({
       'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-      'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
+      'password': ['', Validators.compose([Validators.required, Validators.minLength(3)])]
     });
 
     this.email = this.form.controls['email'];
@@ -41,8 +41,8 @@ export class Login {
               fieldName: 'username',//nombre del campo
               operator: 'contains',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
               //remover comentario cuando se utilize el campo del formulario
-              // value: this.username
-              value: 'jose'//valor
+              value: this.email.value
+              // value: 'jose'//valor
             }
           ]
       ;
@@ -59,6 +59,19 @@ export class Login {
     }
   }
   loginUser(){
+        let failed = 0;
+        let position = 0;
+        for (let i = 0; i < this.items.length; i++) {
+          if(this.items[i].username == this.email.value &&
+             this.items[i].password == this.password.value) {
+                 failed = 1; 
+                 position = i;                 
+                }
+        }
+        if (failed != 0) {
+            alert('Valid user');
+        }
+        else{alert('Invalid username or password');}
      
     }
 
