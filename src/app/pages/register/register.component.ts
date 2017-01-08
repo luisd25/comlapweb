@@ -11,7 +11,7 @@ import {EmailValidator, EqualPasswordsValidator} from '../../theme/validators';
 export class Register {
 
   public form:FormGroup;
-  public name:AbstractControl;
+  public username:AbstractControl;
   public email:AbstractControl;
   public password:AbstractControl;
   public repeatPassword:AbstractControl;
@@ -30,7 +30,7 @@ export class Register {
       }, {validator: EqualPasswordsValidator.validate('password', 'repeatPassword')})
     });
 
-    this.name = this.form.controls['name'];
+    this.username = this.form.controls['name'];
     this.email = this.form.controls['email'];
     this.passwords = <FormGroup> this.form.controls['passwords'];
     this.password = this.passwords.controls['password'];
