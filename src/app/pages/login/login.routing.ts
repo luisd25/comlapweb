@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: Login
+  },
+  {
+    path: 'register',
+    loadChildren: () => System.import('../register/register.module')
+  },
+  {
+    path: 'pages/dashboard',
+    loadChildren: () => System.import('../dashboard/dashboard.module')
   }
 ];
 

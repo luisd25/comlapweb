@@ -1,5 +1,6 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 import {BackandService} from 'angular2bknd-sdk';
 
 @Component({
@@ -19,7 +20,7 @@ export class Login {
   // public username:string;
   private items:any;
 
-  constructor(fb:FormBuilder,private backandService:BackandService) {
+  constructor(fb:FormBuilder,private backandService:BackandService,private router:Router) {
     this.form = fb.group({
       'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(3)])]
@@ -27,7 +28,7 @@ export class Login {
 
     this.email = this.form.controls['email'];
     this.password = this.form.controls['password'];
-    
+
   }
 
   public onSubmit(values:Object):void {
@@ -69,7 +70,8 @@ export class Login {
                 }
         }
         if (failed != 0) {
-            alert('Valid user');
+            // alert('Valid user');
+            this.router.navigate(['pages/dashboard']);
         }
         else{alert('Invalid username or password');}
      
