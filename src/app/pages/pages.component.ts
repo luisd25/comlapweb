@@ -1,4 +1,6 @@
 import {Component, ViewEncapsulation} from '@angular/core';
+import {UserService} from './users.services';
+import { Router, CanActivate } from '@angular/router';
 @Component({
   selector: 'pages',
   encapsulation: ViewEncapsulation.None,
@@ -27,11 +29,15 @@ import {Component, ViewEncapsulation} from '@angular/core';
     <ba-back-top position="200"></ba-back-top>
     `
 })
-export class Pages {
+export class Pages implements CanActivate {
 
-  constructor() {
+  constructor(private user: UserService) {
   }
 
   ngOnInit() {
+  }
+  
+  canActivate(){
+    return this.user.isLoggedIn();
   }
 }

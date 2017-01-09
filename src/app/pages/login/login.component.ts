@@ -2,6 +2,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {BackandService} from 'angular2bknd-sdk';
+import {UserService} from '../users.services';
 
 @Component({
   selector: 'login',
@@ -20,7 +21,7 @@ export class Login {
   // public username:string;
   private items:any;
 
-  constructor(fb:FormBuilder,private backandService:BackandService,private router:Router) {
+  constructor(fb:FormBuilder,private backandService:BackandService,private router:Router,private user:UserService) {
     this.form = fb.group({
       'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(3)])]
@@ -71,7 +72,10 @@ export class Login {
         }
         if (failed != 0) {
             // alert('Valid user');
-            this.router.navigate(['pages/dashboard']);
+            this.user.login2();
+            this.router.navigate(['pages/dashboard']);//nos dirigimos a la pagina principal
+            localStorage.setItem('currentUser',this.items[position]);//se almacena la info del usuario en el localstorage
+                    
         }
         else{alert('Invalid username or password');}
      
