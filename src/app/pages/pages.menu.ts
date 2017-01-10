@@ -36,6 +36,28 @@ export const PAGES_MENU = [
           }
         ]
       },
+      {
+        path: 'profile',
+        data: {
+          menu: {
+            title: 'Profile',
+            icon: 'ion-edit',
+            selected: false,
+            expanded: false,
+            order: 150,
+          }
+        },
+        children: [
+          {
+            path: 'layouts',
+            data: {
+              menu: {
+                title: 'User Profile',
+              }
+            }
+          }
+        ]
+      },
       //{
       //  path: 'components',
       //  data: {

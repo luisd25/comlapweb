@@ -7,6 +7,7 @@ import { layoutPaths } from './theme/theme.constants';
 import { BaThemeConfig } from './theme/theme.config';
 import { BaMenuService } from './theme';
 import {ComponentsHelper } from 'ng2-bootstrap';
+import {BackandService} from 'angular2bknd-sdk';
 
 import { MENU } from './app.menu';
 /*
@@ -33,7 +34,14 @@ export class App {
               private _spinner: BaThemeSpinner,
               private _config: BaThemeConfig,
               private _menuService: BaMenuService,
-              private viewContainerRef: ViewContainerRef) {
+              private viewContainerRef: ViewContainerRef,
+              private backandService:BackandService) {
+    
+    backandService.setAppName('comlap');
+    backandService.setSignUpToken('44b098f6-48c0-42e7-965f-f5474199be77');
+    backandService.setAnonymousToken('ccfd582c-ece7-46c1-a552-1fa8ec61f71a');
+    backandService.signin('luis@123', '1234567');
+
 
     this._menuService.updateMenuByRoutes(<Routes>MENU);
 
