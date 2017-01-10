@@ -11,6 +11,8 @@ import { LeafletMaps } from './components/leafletMaps/leafletMaps.component';
 import { LineMaps } from './components/lineMaps/lineMaps.component';
 import { BubbleMapsService } from './components/bubbleMaps/bubbleMaps.service';
 import { LineMapsService } from './components/lineMaps/lineMaps.service';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { SmartTablesService } from './components/googleMaps/smartTables.service';
 
 
 @NgModule({
@@ -18,7 +20,8 @@ import { LineMapsService } from './components/lineMaps/lineMaps.service';
     CommonModule,
     FormsModule,
     NgaModule,
-    routing
+    routing,
+    Ng2SmartTableModule
   ],
   declarations: [
     Maps,
@@ -29,7 +32,8 @@ import { LineMapsService } from './components/lineMaps/lineMaps.service';
   ],
   providers: [
     BubbleMapsService,
-    LineMapsService
+    LineMapsService,
+    SmartTablesService
   ]
 })
 export default class MapsModule {}

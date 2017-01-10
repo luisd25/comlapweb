@@ -1,5 +1,7 @@
 import {Component, ElementRef} from '@angular/core';
 import {BackandService} from 'angular2bknd-sdk';
+import { SmartTablesService } from './smartTables.service';
+import { LocalDataSource } from 'ng2-smart-table';
 // import {GoogleMapsLoader} from './googleMaps.loader';
 
 @Component({
@@ -9,23 +11,66 @@ import {BackandService} from 'angular2bknd-sdk';
 })
 export class GoogleMaps {
   public hospitalList: any;
- 
-  constructor(private _elementRef:ElementRef,private backandService:BackandService) {
+  query: string = '';
+
+  settings = {
+    add: {
+      addButtonContent: '<i class="ion-ios-plus-outline"></i>',
+      createButtonContent: '<i class="ion-checkmark"></i>',
+      cancelButtonContent: '<i class="ion-close"></i>',
+    },
+    edit: {
+      editButtonContent: '<i class="ion-edit"></i>',
+      saveButtonContent: '<i class="ion-checkmark"></i>',
+      cancelButtonContent: '<i class="ion-close"></i>',
+    },
+    delete: {
+      deleteButtonContent: '<i class="ion-trash-a"></i>',
+      confirmDelete: true
+    },
+    columns: {
+      caseid: {
+        title: 'ID',
+        type: 'number'
+      },
+      casetitle: {
+        title: 'Titulo',
+        type: 'string'
+      },
+      casestartdate: {
+        title: 'Fecha Inicio',
+        type: 'string'
+      },
+      caseenddate: {
+        title: 'Fecha Fin',
+        type: 'string'
+      },
+      casedescription: {
+        title: 'Descripción',
+        type: 'string'
+      },
+      hospitalid: {
+        title: 'id hospital',
+        type: 'number',
+        filter:true
+      }
+    }
+  };
+
+  public source: LocalDataSource = new LocalDataSource();
+  usercases:any;
+  constructor(private _elementRef:ElementRef,private backandService:BackandService,protected service: SmartTablesService) {
+      
+    
   }
+  
 
   ngAfterViewInit() {
+
+      this.usercases = JSON.parse(localStorage.getItem('usercases'));
+      this.source.load(this.usercases);
+      // console.log('source:',this.source);
     
-    // let map = this._elementRef.nativeElement.querySelector('.google-maps');
-
-    // TODO: do not load this each time as we already have the library after first attempt
-    // GoogleMapsLoader.load((google) => {
-    //   new google.maps.Map(map, {
-    //     center: new google.maps.LatLng(44.5403, -78.5463),
-    //     zoom: 8,
-    //     mapTypeId: google.maps.MapTypeId.ROADMAP
-    //   });
-    // });
-
         navigator.geolocation.getCurrentPosition((position)=>{
       console.log('geo: ',position.coords.latitude,position.coords.longitude);
       var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -69,27 +114,33 @@ export class GoogleMaps {
                err => this.backandService.logError(err),
                ()=> {
                     for(let location of this.hospitalList){
+
                         var marker = new google.maps.Marker({
                           position: new google.maps.LatLng(location.latitude,location.longitude),
                           title:location.NombreCentro,
                           animation: google.maps.Animation.DROP,
                           map:map
                         });
+
+                    //     marker.addListener('click', function() {
+                    //       this.filtertable;
+                    //       // console.log(this.source);
+                    //       // this.source.setFilter([{ field: 'hospitalid', search: location.hospitalid }]);
+                      
+                    // });
+                    // console.log(this.filtertable.);
+                      // google.maps.event.addListener(marker, "click", this.filtertable.bind(location.hospitalid));
                     }
-                      // marker.setMap(map);
+                      
                   }
 
             
            );
 
   }
-  ngOnInit() {
 
-
-        
-    }
-
-    loadhospital(){
-      
-    }
+  filtertable(filter:any){
+      this.source.setFilter([{ field: 'hospitalid', search: filter }]);
+      // console.log('pase');
+  }
 }
