@@ -41,8 +41,7 @@ export class GoogleMaps {
         var mapProp = {
             center: new google.maps.LatLng(18.4098742 , -70.1198232),
             zoom: 14,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+            mapTypeId: google.maps.MapTypeId.ROADMAP
             
         };
         var map = new google.maps.Map(this._elementRef.nativeElement.querySelector('.google-maps'), mapProp);
