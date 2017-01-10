@@ -1,6 +1,6 @@
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
-import { FormsModule as AngularFormsModule } from '@angular/forms';
+import { FormsModule as AngularFormsModule,ReactiveFormsModule  } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 
 import { routing }       from './forms.routing';
@@ -15,6 +15,7 @@ import { BlockForm } from './components/layouts/components/blockForm';
   imports: [
     CommonModule,
     AngularFormsModule,
+    ReactiveFormsModule, 
     NgaModule,
     RatingModule,
     routing
