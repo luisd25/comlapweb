@@ -25,16 +25,25 @@ export class GoogleMaps {
     //     mapTypeId: google.maps.MapTypeId.ROADMAP
     //   });
     // });
+
         navigator.geolocation.getCurrentPosition((position)=>{
       console.log('geo: ',position.coords.latitude,position.coords.longitude);
       var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       map.setCenter(latLng)
+      var marker = new google.maps.Marker({
+                          position: latLng,
+                          title:'Current location',
+                          animation: google.maps.Animation.DROP,
+                          map:map
+                        });
 
     });
         var mapProp = {
             center: new google.maps.LatLng(18.4098742 , -70.1198232),
-            zoom: 8,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom: 14,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+            
         };
         var map = new google.maps.Map(this._elementRef.nativeElement.querySelector('.google-maps'), mapProp);
 
