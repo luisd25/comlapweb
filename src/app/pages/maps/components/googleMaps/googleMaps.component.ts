@@ -105,9 +105,14 @@ export class GoogleMaps {
         let filter =
                 [
                     {
-                    fieldName: "Provincia",
-                    operator: "contains",
-                    value: "SANTO DOMINGO"
+                      fieldName: "Provincia",
+                      operator: "contains",
+                      value: "SANTO DOMINGO"
+                    },
+                    {
+                      fieldName: "latitude",
+                      operator: "greaterThan",
+                      value: "0"
                     }
                 ]
             ;
