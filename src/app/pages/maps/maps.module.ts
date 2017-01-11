@@ -13,6 +13,7 @@ import { BubbleMapsService } from './components/bubbleMaps/bubbleMaps.service';
 import { LineMapsService } from './components/lineMaps/lineMaps.service';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { SmartTablesService } from './components/googleMaps/smartTables.service';
+import { SmartTables } from './components/smartTables/smartTables.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { SmartTablesService } from './components/googleMaps/smartTables.service'
     BubbleMaps,
     GoogleMaps,
     LeafletMaps,
-    LineMaps
+    LineMaps,
+    SmartTables
   ],
   providers: [
     BubbleMapsService,

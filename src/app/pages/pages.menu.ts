@@ -259,6 +259,14 @@ export const PAGES_MENU = [
                 title: 'Line Maps',
               }
             }
+          },
+          {
+            path: 'appointment',
+            data: {
+              menu: {
+                title: 'appointment',
+              }
+            }
           }
         ]
       },
