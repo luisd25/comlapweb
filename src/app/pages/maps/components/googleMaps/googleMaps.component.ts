@@ -14,6 +14,7 @@ export class GoogleMaps {
   public hospitalList: any;
   query: string = '';
   lastfilter:any;
+  isPatient:boolean = true;
 
   settings = {
     add: {
@@ -76,7 +77,13 @@ export class GoogleMaps {
       this.usercases = JSON.parse(localStorage.getItem('usercases'));
       this.source.load(this.usercases);
     
-        navigator.geolocation.getCurrentPosition((position)=>{
+      try {
+        
+      
+      navigator.geolocation.getCurrentPosition((position)=>{
+        try {
+          
+         
       console.log('geo: ',position.coords.latitude,position.coords.longitude);
       var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       map.setCenter(latLng)
@@ -86,6 +93,9 @@ export class GoogleMaps {
                           animation: google.maps.Animation.DROP,
                           map:map
                         });
+        }catch (error) {
+          console.log('position not getted');
+        }
 
     });
         var mapProp = {
@@ -117,7 +127,7 @@ export class GoogleMaps {
                 ]
             ;
 
-            this.backandService.getList('hospital',280,null,filter)
+            this.backandService.getList('hospital',100,null,filter)
            .subscribe(
                data => {
                    console.log(data);
@@ -145,6 +155,11 @@ export class GoogleMaps {
 
             
            );
+      }
+           catch (error) {
+             console.log('map does not load');
+        
+           }
 
   }
 

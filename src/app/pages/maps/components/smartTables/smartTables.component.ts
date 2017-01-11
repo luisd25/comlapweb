@@ -19,7 +19,7 @@ export class SmartTables {
       addButtonContent: '<i class="ion-ios-plus-outline"></i>',
       createButtonContent: '<i class="ion-checkmark"></i>',
       cancelButtonContent: '<i class="ion-close"></i>',
-      confirmSave: true 
+      confirmCreate: true 
     },
     edit: {
       editButtonContent: '<i class="ion-edit"></i>',
@@ -66,6 +66,8 @@ export class SmartTables {
   }
   ngAfterViewInit(){
     this.lastfilter = localStorage.getItem('casefilter');
+    console.log(this.lastfilter);
+    if(this.lastfilter > 0) this.filtertable(this.lastfilter);
   }
 
   onDeleteConfirm(event): void {
@@ -84,7 +86,7 @@ export class SmartTables {
 
   }
     onCreteConfirm(event){
-      console.log(event);
+      console.log('oncreate:',event);
       this.backandService.create('appointment', {
         apttitle: event.newData.apttitle,
         aptdetail: event.newData.aptdetail,
@@ -98,5 +100,9 @@ export class SmartTables {
         err => {this.backandService.logError(err);event.confirm.reject();},
         () => {event.confirm.resolve();console.log('created');}
       );   
+  }
+  filtertable(filter:any){
+      this.source.setFilter([{ field: 'caseid', search: filter }]);
+      this.lastfilter = filter;
   }
 }
