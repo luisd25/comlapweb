@@ -41,7 +41,9 @@ export class Pages implements CanActivate {
   }
 
   ngOnInit() {
-    let filter =//filtro para el select (where clause)
+    let filter;
+    if(this.currentUser.usertype.trim().toLowerCase()=='patient'){
+       filter =//filtro para el select (where clause)
           [
             {
               fieldName: 'username',//nombre del campo
@@ -52,6 +54,21 @@ export class Pages implements CanActivate {
             }
           ]
       ;
+
+    }else{
+       filter =//filtro para el select (where clause)
+          [
+            {
+              fieldName: 'staffusername',//nombre del campo
+              operator: 'contains',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
+              //remover comentario cuando se utilize el campo del formulario
+              value: this.currentUser.username
+              // value: 'jose'//valor
+            }
+          ]
+      ;
+
+    }
       //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/backandService
       this.backandService.getList(this.currentUser.usertype,null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(
@@ -72,8 +89,11 @@ export class Pages implements CanActivate {
   }
 
   loadUserData(){
+      let filter
       console.log(this.fullUser.patientid);
-      let filter =//filtro para el select (where clause)
+      if(this.currentUser.usertype.trim().toLowerCase()=='patient'){
+      
+      filter =//filtro para el select (where clause)
           [
             {
               fieldName: 'patientid',//nombre del campo
@@ -84,6 +104,22 @@ export class Pages implements CanActivate {
             }
           ]
       ;
+    }else{
+      filter =//filtro para el select (where clause)
+          [
+            {
+              fieldName: 'staffid',//nombre del campo
+              operator: 'contains',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
+              //remover comentario cuando se utilize el campo del formulario
+              value: this.fullUser.staffid
+              // value: 'jose'//valor
+            }
+          ]
+      ;
+
+    }
+
+      
       //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/backandService
       this.backandService.getList('cases',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(

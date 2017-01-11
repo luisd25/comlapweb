@@ -78,6 +78,7 @@ export class Login {
             this.user.login2();
             this.router.navigate(['pages/dashboard']);//nos dirigimos a la pagina principal
             localStorage.setItem('currentUser',JSON.stringify(this.items[position]));//se almacena la info del usuario en el localstorage
+            localStorage.setItem('userType',JSON.stringify(this.items[position].usertype))
             // this._spinner.hide();                                
         }
         else{

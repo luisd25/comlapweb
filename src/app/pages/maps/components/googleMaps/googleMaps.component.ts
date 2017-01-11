@@ -15,6 +15,7 @@ export class GoogleMaps {
   query: string = '';
   lastfilter:any;
   isPatient:boolean = true;
+  userType:string = '';
 
   settings = {
     add: {
@@ -64,7 +65,13 @@ export class GoogleMaps {
   public source: LocalDataSource = new LocalDataSource();
   usercases:any;
   constructor(private _elementRef:ElementRef,private backandService:BackandService,private router:Router) {
-      
+      this.userType = JSON.parse(localStorage.getItem('usertype'));
+      if(this.userType.trim().toLowerCase()=='patient'){
+        this.isPatient = true;
+      }
+      else{
+        this.isPatient = false;
+      }
     
   }
   
