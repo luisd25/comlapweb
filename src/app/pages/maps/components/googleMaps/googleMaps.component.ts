@@ -175,8 +175,9 @@ export class GoogleMaps {
         },
         err => {this.backandService.logError(err);event.confirm.reject();},
         () => {event.confirm.resolve();console.log('created');}
-      );
-      
-      
+      );   
+  }
+  onRowSelected(event){
+    console.log('fila:',event);
   }
 }
