@@ -92,7 +92,7 @@ export class Pages implements CanActivate {
       let filter
       console.log(this.fullUser.patientid);
       if(this.currentUser.usertype.trim().toLowerCase()=='patient'){
-      
+      // console.log('probando:',this.fullUser);
       filter =//filtro para el select (where clause)
           [
             {

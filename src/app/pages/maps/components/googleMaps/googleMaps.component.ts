@@ -65,7 +65,7 @@ export class GoogleMaps {
   public source: LocalDataSource = new LocalDataSource();
   usercases:any;
   constructor(private _elementRef:ElementRef,private backandService:BackandService,private router:Router) {
-      this.userType = JSON.parse(localStorage.getItem('usertype'));
+      this.userType = JSON.parse(localStorage.getItem('userType'));
       if(this.userType.trim().toLowerCase()=='patient'){
         this.isPatient = true;
       }
