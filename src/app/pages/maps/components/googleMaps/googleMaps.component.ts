@@ -12,12 +12,14 @@ import { LocalDataSource } from 'ng2-smart-table';
 export class GoogleMaps {
   public hospitalList: any;
   query: string = '';
+  lastfilter:any;
 
   settings = {
     add: {
       addButtonContent: '<i class="ion-ios-plus-outline"></i>',
       createButtonContent: '<i class="ion-checkmark"></i>',
       cancelButtonContent: '<i class="ion-close"></i>',
+      confirmCreate: true
     },
     edit: {
       editButtonContent: '<i class="ion-edit"></i>',
@@ -67,9 +69,11 @@ export class GoogleMaps {
 
   ngAfterViewInit() {
 
+      var infoWindow = new google.maps.InfoWindow();
+
+
       this.usercases = JSON.parse(localStorage.getItem('usercases'));
       this.source.load(this.usercases);
-      // console.log('source:',this.source);
     
         navigator.geolocation.getCurrentPosition((position)=>{
       console.log('geo: ',position.coords.latitude,position.coords.longitude);
@@ -85,7 +89,7 @@ export class GoogleMaps {
     });
         var mapProp = {
             center: new google.maps.LatLng(18.4098742 , -70.1198232),
-            zoom: 14,
+            zoom: 10,
             mapTypeId: google.maps.MapTypeId.ROADMAP
             
         };
@@ -94,6 +98,8 @@ export class GoogleMaps {
         
 
         // To add the marker to the map, call setMap();
+
+        var self = this;
         
         let filter =
                 [
@@ -122,14 +128,11 @@ export class GoogleMaps {
                           map:map
                         });
 
-                    //     marker.addListener('click', function() {
-                    //       this.filtertable;
-                    //       // console.log(this.source);
-                    //       // this.source.setFilter([{ field: 'hospitalid', search: location.hospitalid }]);
+                        google.maps.event.addListener(marker, "click", function() {
+                            self.filtertable(location.hospitalid);
+                            // self.source.add()
                       
-                    // });
-                    // console.log(this.filtertable.);
-                      // google.maps.event.addListener(marker, "click", this.filtertable.bind(location.hospitalid));
+                    });
                     }
                       
                   }
@@ -141,6 +144,39 @@ export class GoogleMaps {
 
   filtertable(filter:any){
       this.source.setFilter([{ field: 'hospitalid', search: filter }]);
-      // console.log('pase');
+      this.lastfilter = filter;
+  }
+
+    onDeleteConfirm(event): void {
+      if(window.confirm('Are you sure you want to delete?')){
+        this.backandService.delete('cases',event.data.caseid).subscribe(
+        data=>{
+
+        },
+        err =>{this.backandService.logError(err);event.confirm.resolve();},
+        ()=> {console.log('Success delete'); event.confirm.resolve();}
+        );
+      }
+      else{
+          event.confirm.reject();
+      }
+
+  }
+    onCreteConfirm(event){
+      console.log(event);
+      this.backandService.create('cases', {
+        casetitle: event.newData.casetitle,
+        casedescription: event.newData.casedescription,
+        hospitalid:this.lastfilter,
+        patientid:this.usercases[0].patientid
+      }).subscribe(
+        data => {
+          console.log('caso agregado');
+        },
+        err => {this.backandService.logError(err);event.confirm.reject();},
+        () => {event.confirm.resolve();console.log('created');}
+      );
+      
+      
   }
 }
