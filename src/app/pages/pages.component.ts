@@ -34,6 +34,8 @@ export class Pages implements CanActivate {
   currentUser:any;
   fullUser:any;
   userCases:any;
+  userAppointment:any;
+
   constructor(private user: UserService,private backandService:BackandService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
@@ -92,6 +94,36 @@ export class Pages implements CanActivate {
                 err => this.backandService.logError(err),
                 ()=> {
                         localStorage.setItem('usercases',JSON.stringify(this.userCases));
+                        this.loadUserAppointment();
+                        
+                      }
+            );
+
+  }
+
+  loadUserAppointment(){
+      console.log(this.fullUser.patientid);
+      let filter =//filtro para el select (where clause)
+          [
+            {
+              fieldName: 'patientid',//nombre del campo
+              operator: 'in',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
+              //remover comentario cuando se utilize el campo del formulario
+              value: this.fullUser.patientid
+              // value: 'jose'//valor
+            }
+          ]
+      ;
+      //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/backandService
+      this.backandService.getList('appointment',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
+            .subscribe(
+                data => {
+                    console.log('appointment del usuario:',data);
+                    this.userAppointment = data;
+                },
+                err => this.backandService.logError(err),
+                ()=> {
+                        localStorage.setItem('userappointment',JSON.stringify(this.userAppointment));
                         
                       }
             );
