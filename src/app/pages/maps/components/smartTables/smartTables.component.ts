@@ -1,5 +1,5 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-
+import {BackandService} from 'angular2bknd-sdk';
 import { LocalDataSource } from 'ng2-smart-table';
 
 @Component({
@@ -11,12 +11,15 @@ import { LocalDataSource } from 'ng2-smart-table';
 export class SmartTables {
 
   query: string = '';
+  userAppointment:any;
+  lastfilter:any;
 
   settings = {
     add: {
       addButtonContent: '<i class="ion-ios-plus-outline"></i>',
       createButtonContent: '<i class="ion-checkmark"></i>',
       cancelButtonContent: '<i class="ion-close"></i>',
+      confirmSave: true 
     },
     edit: {
       editButtonContent: '<i class="ion-edit"></i>',
@@ -28,28 +31,28 @@ export class SmartTables {
       confirmDelete: true
     },
     columns: {
-      id: {
-        title: 'ID',
+      appointmentid: {
+        title: '# Cita',
         type: 'number'
       },
-      firstName: {
-        title: 'First Name',
+      apttitle: {
+        title: 'Titulo',
         type: 'string'
       },
-      lastName: {
-        title: 'Last Name',
+      aptstartdate: {
+        title: 'Fecha Inicio',
         type: 'string'
       },
-      username: {
-        title: 'Username',
+      aptenddate: {
+        title: 'Fecha Fin',
         type: 'string'
       },
-      email: {
-        title: 'E-mail',
+      aptdetail: {
+        title: 'Detalle',
         type: 'string'
       },
-      age: {
-        title: 'Age',
+      caseid: {
+        title: '# Caso',
         type: 'number'
       }
     }
@@ -57,18 +60,43 @@ export class SmartTables {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor() {
-    // this.service.getData().then((data) => {
-    //   this.source.load(data);
-    // });
+  constructor(private backandService:BackandService) {
+      this.userAppointment = JSON.parse(localStorage.getItem('userappointment'));
+      this.source.load(this.userAppointment);
+  }
+  ngAfterViewInit(){
+    this.lastfilter = localStorage.getItem('casefilter');
   }
 
   onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
+      if(window.confirm('Are you sure you want to delete?')){
+        this.backandService.delete('cases',event.data.caseid).subscribe(
+        data=>{
+
+        },
+        err =>{this.backandService.logError(err);event.confirm.resolve();},
+        ()=> {console.log('Success delete'); event.confirm.resolve();}
+        );
+      }
+      else{
+          event.confirm.reject();
+      }
+
+  }
+    onCreteConfirm(event){
       console.log(event);
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
+      this.backandService.create('appointment', {
+        apttitle: event.newData.apttitle,
+        aptdetail: event.newData.aptdetail,
+        patientid:this.userAppointment[0].patientid,
+        caseid:this.lastfilter
+
+      }).subscribe(
+        data => {
+          console.log('appointment agregado');
+        },
+        err => {this.backandService.logError(err);event.confirm.reject();},
+        () => {event.confirm.resolve();console.log('created');}
+      );   
   }
 }

@@ -1,7 +1,8 @@
 import {Component, ElementRef} from '@angular/core';
 import {BackandService} from 'angular2bknd-sdk';
-import { SmartTablesService } from './smartTables.service';
 import { LocalDataSource } from 'ng2-smart-table';
+import {Router} from '@angular/router';
+
 // import {GoogleMapsLoader} from './googleMaps.loader';
 
 @Component({
@@ -61,7 +62,7 @@ export class GoogleMaps {
 
   public source: LocalDataSource = new LocalDataSource();
   usercases:any;
-  constructor(private _elementRef:ElementRef,private backandService:BackandService,protected service: SmartTablesService) {
+  constructor(private _elementRef:ElementRef,private backandService:BackandService,private router:Router) {
       
     
   }
@@ -147,7 +148,7 @@ export class GoogleMaps {
       this.lastfilter = filter;
   }
 
-    onDeleteConfirm(event): void {
+  onDeleteConfirm(event): void {
       if(window.confirm('Are you sure you want to delete?')){
         this.backandService.delete('cases',event.data.caseid).subscribe(
         data=>{
@@ -179,5 +180,8 @@ export class GoogleMaps {
   }
   onRowSelected(event){
     console.log('fila:',event);
+    localStorage.setItem('casefilter',event.data.caseid);
+    this.router.navigate(['pages/maps/appointment']);
+
   }
 }
