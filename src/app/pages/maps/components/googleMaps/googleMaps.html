@@ -1,3 +1,12 @@
-<ba-card title="Google Maps">
-  <div class="google-maps"></div>
+<ba-card *ngIf="isPatient" title="Hospitales Cercanos">
+  <div  class="google-maps"></div>
 </ba-card>
+<div class="widgets">
+
+  <div class="row">
+    <ba-card title="User Cases" baCardClass="with-scroll">
+      <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onRowSelected($event)" (createConfirm)="onCreteConfirm($event)" (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+    </ba-card>
+  </div>
+
+</div>

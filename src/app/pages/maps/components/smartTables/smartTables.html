@@ -1,0 +1,9 @@
+<div class="widgets">
+
+  <div class="row">
+    <ba-card title="User Appointments" baCardClass="with-scroll">
+      <ng2-smart-table [settings]="settings" [source]="source" (createConfirm)="onCreteConfirm($event)" (deleteConfirm)="onDeleteConfirm($event)"></ng2-smart-table>
+    </ba-card>
+  </div>
+
+</div>

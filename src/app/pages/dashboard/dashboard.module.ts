@@ -21,6 +21,7 @@ import { PieChartService } from './pieChart/pieChart.service';
 import { TodoService } from './todo/todo.service';
 import { TrafficChartService } from './trafficChart/trafficChart.service';
 import { UsersMapService } from './usersMap/usersMap.service';
+import { BaThemeSpinner } from '../../theme/services';
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { UsersMapService } from './usersMap/usersMap.service';
   ],
   providers: [
     CalendarService,
+    BaThemeSpinner,
     FeedService,
     LineChartService,
     PieChartService,

@@ -66,6 +66,7 @@ export class SmartTables {
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
+      console.log(event);
       event.confirm.resolve();
     } else {
       event.confirm.reject();

@@ -32,5 +32,6 @@ export class BaPageTop {
   }
   signout(){
     this.user.logout();
+    
   }
 }
