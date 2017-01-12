@@ -15,7 +15,7 @@ import {BackandService} from 'angular2bknd-sdk';
         <router-outlet></router-outlet>
       </div>
     </div>
-    <footer class="al-footer clearfix">
+    <!--<footer class="al-footer clearfix">
       <div class="al-footer-right">Created with <i class="ion-heart"></i></div>
       <div class="al-footer-main clearfix">
         <div class="al-copy">&copy; <a href="http://akveo.com">Akveo</a> 2016</div>
@@ -26,7 +26,7 @@ import {BackandService} from 'angular2bknd-sdk';
           <li><i class="socicon socicon-github"></i></li>
         </ul>
       </div>
-    </footer>
+    </footer>-->
     <ba-back-top position="200"></ba-back-top>
     `
 })
