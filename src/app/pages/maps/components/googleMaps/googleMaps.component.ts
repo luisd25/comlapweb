@@ -1,8 +1,7 @@
 import {Component, ElementRef} from '@angular/core';
-import {BackandService} from 'angular2bknd-sdk';
 import { LocalDataSource } from 'ng2-smart-table';
 import {Router} from '@angular/router';
-
+import { ComlapService } from '../../../../comlap.service';
 // import {GoogleMapsLoader} from './googleMaps.loader';
 
 @Component({
@@ -64,7 +63,7 @@ export class GoogleMaps {
 
   public source: LocalDataSource = new LocalDataSource();
   usercases:any;
-  constructor(private _elementRef:ElementRef,private backandService:BackandService,private router:Router) {
+  constructor(private _elementRef:ElementRef,private comlapService:ComlapService,private router:Router) {
       this.userType = JSON.parse(localStorage.getItem('userType'));
       if(this.userType.trim().toLowerCase()=='patient'){
         this.isPatient = true;
@@ -134,13 +133,13 @@ export class GoogleMaps {
                 ]
             ;
 
-            this.backandService.getList('hospital',100,null,filter)
+            this.comlapService.getList('hospital',100,null,filter)
            .subscribe(
                data => {
                    console.log(data);
                    this.hospitalList = data;
                },
-               err => this.backandService.logError(err),
+               err => this.comlapService.logError(err),
                ()=> {
                     for(let location of this.hospitalList){
 
@@ -177,11 +176,11 @@ export class GoogleMaps {
 
   onDeleteConfirm(event): void {
       if(window.confirm('Are you sure you want to delete?')){
-        this.backandService.delete('cases',event.data.caseid).subscribe(
+        this.comlapService.delete('cases',event.data.caseid).subscribe(
         data=>{
 
         },
-        err =>{this.backandService.logError(err);event.confirm.resolve();},
+        err =>{this.comlapService.logError(err);event.confirm.resolve();},
         ()=> {console.log('Success delete'); event.confirm.resolve();}
         );
       }
@@ -192,7 +191,7 @@ export class GoogleMaps {
   }
     onCreteConfirm(event){
       console.log(event);
-      this.backandService.create('cases', {
+      this.comlapService.create('cases', {
         casetitle: event.newData.casetitle,
         casedescription: event.newData.casedescription,
         hospitalid:this.lastfilter,
@@ -201,7 +200,7 @@ export class GoogleMaps {
         data => {
           console.log('caso agregado');
         },
-        err => {this.backandService.logError(err);event.confirm.reject();},
+        err => {this.comlapService.logError(err);event.confirm.reject();},
         () => {event.confirm.resolve();console.log('created');}
       );   
   }

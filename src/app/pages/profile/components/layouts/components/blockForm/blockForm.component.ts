@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators,FormControl} from '@angular/forms';
-import {BackandService} from 'angular2bknd-sdk';
+import { ComlapService } from '../../../../../../comlap.service';
 
 @Component({
   selector: 'block-form',
@@ -15,7 +15,7 @@ export class BlockForm {
   public firstname:AbstractControl;
   public lastname:AbstractControl;
   
-  constructor(fb:FormBuilder,private backandService:BackandService) {
+  constructor(fb:FormBuilder,private comlapService:ComlapService) {
     this.fullUser = JSON.parse(localStorage.getItem('fullUser'));
     // this.form = fb.group({
     //   'inputEmail': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
@@ -76,12 +76,12 @@ export class BlockForm {
         username: this.fullUser.username
     }
 
-      this.backandService.update('patient', this.fullUser.patientid,updateobject,false,true)
+      this.comlapService.update('patient', this.fullUser.patientid,updateobject,false,true)
         .subscribe(
                 data => {
                   console.log(data);
                 },
-                err => this.backandService.logError(err),
+                err => this.comlapService.logError(err),
                 () => this.successonUpdate()
             );
     }

@@ -1,6 +1,6 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {BackandService} from 'angular2bknd-sdk';
 import { LocalDataSource } from 'ng2-smart-table';
+import { ComlapService } from '../../../../comlap.service';
 
 @Component({
   selector: 'basic-tables',
@@ -60,7 +60,7 @@ export class SmartTables {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private backandService:BackandService) {
+  constructor(private comlapservice:ComlapService) {
       this.userAppointment = JSON.parse(localStorage.getItem('userappointment'));
       this.source.load(this.userAppointment);
   }
@@ -72,11 +72,11 @@ export class SmartTables {
 
   onDeleteConfirm(event): void {
       if(window.confirm('Are you sure you want to delete?')){
-        this.backandService.delete('cases',event.data.caseid).subscribe(
+        this.comlapservice.delete('cases',event.data.caseid).subscribe(
         data=>{
 
         },
-        err =>{this.backandService.logError(err);event.confirm.resolve();},
+        err =>{this.comlapservice.logError(err);event.confirm.resolve();},
         ()=> {console.log('Success delete'); event.confirm.resolve();}
         );
       }
@@ -87,7 +87,7 @@ export class SmartTables {
   }
     onCreteConfirm(event){
       console.log('oncreate:',event);
-      this.backandService.create('appointment', {
+      this.comlapservice.create('appointment', {
         apttitle: event.newData.apttitle,
         aptdetail: event.newData.aptdetail,
         patientid:this.userAppointment[0].patientid,
@@ -97,7 +97,7 @@ export class SmartTables {
         data => {
           console.log('appointment agregado');
         },
-        err => {this.backandService.logError(err);event.confirm.reject();},
+        err => {this.comlapservice.logError(err);event.confirm.reject();},
         () => {event.confirm.resolve();console.log('created');}
       );   
   }

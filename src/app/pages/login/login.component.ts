@@ -1,9 +1,11 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {BackandService} from 'angular2bknd-sdk';
 import {UserService} from '../users.services';
 import { BaThemeSpinner } from '../../theme/services';
+import { ComlapService } from '../../comlap.service';
+
+
 
 @Component({
   selector: 'login',
@@ -22,7 +24,7 @@ export class Login {
   // public username:string;
   private items:any;
 
-  constructor(fb:FormBuilder,private backandService:BackandService
+  constructor(fb:FormBuilder,private comlapService:ComlapService
               ,private router:Router,private user:UserService,private _spinner: BaThemeSpinner) {
     this.form = fb.group({
       'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
@@ -37,28 +39,17 @@ export class Login {
   public onSubmit(values:Object):void {
     console.log('presione el boton');
     this.submitted = true;
-    this._spinner.show();
+    // this._spinner.show();
     if (this.form.valid) {// luego de que se llene el formulario
-      let filter =//filtro para el select (where clause)
-          [
-            {
-              fieldName: 'username',//nombre del campo
-              operator: 'contains',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
-              //remover comentario cuando se utilize el campo del formulario
-              value: this.email.value
-              // value: 'jose'//valor
-            }
-          ]
-      ;
-      //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/backandService
-      this.backandService.getList('users',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
+  
+      this.comlapService.getList('users','username','eq',this.email.value)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(
                 data => {
                     console.log('lista de usuarios',data);
                     this.items = data;
                 },
-                err => this.backandService.logError(err),
-                ()=> this.loginUser()
+                err => this.comlapService.logError(err),
+                ()=> console.log('ok')
             );  
     }
   }

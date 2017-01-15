@@ -1,7 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {UserService} from './users.services';
 import { Router, CanActivate } from '@angular/router';
-import {BackandService} from 'angular2bknd-sdk';
+import { ComlapService } from '../comlap.service';
 @Component({
   selector: 'pages',
   encapsulation: ViewEncapsulation.None,
@@ -36,7 +36,7 @@ export class Pages implements CanActivate {
   userCases:any;
   userAppointment:any;
 
-  constructor(private user: UserService,private backandService:BackandService) {
+  constructor(private user: UserService,private comlapService:ComlapService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -69,14 +69,14 @@ export class Pages implements CanActivate {
       ;
 
     }
-      //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/backandService
-      this.backandService.getList(this.currentUser.usertype,null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
+      //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/comlapService
+      this.comlapService.getList(this.currentUser.usertype,null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(
                 data => {
                     console.log('usuario completo:',data);
                     this.fullUser = data[0];
                 },
-                err => this.backandService.logError(err),
+                err => this.comlapService.logError(err),
                 ()=> {
                         localStorage.setItem('fullUser',JSON.stringify(this.fullUser));
                         this.loadUserData();
@@ -120,14 +120,14 @@ export class Pages implements CanActivate {
     }
 
       
-      //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/backandService
-      this.backandService.getList('cases',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
+      //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/comlapService
+      this.comlapService.getList('cases',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(
                 data => {
                     console.log('casos del usuario:',data);
                     this.userCases = data;
                 },
-                err => this.backandService.logError(err),
+                err => this.comlapService.logError(err),
                 ()=> {
                         localStorage.setItem('usercases',JSON.stringify(this.userCases));
                         this.loadUserAppointment();
@@ -150,14 +150,14 @@ export class Pages implements CanActivate {
             }
           ]
       ;
-      //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/backandService
-      this.backandService.getList('appointment',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
+      //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/comlapService
+      this.comlapService.getList('appointment',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(
                 data => {
                     console.log('appointment del usuario:',data);
                     this.userAppointment = data;
                 },
-                err => this.backandService.logError(err),
+                err => this.comlapService.logError(err),
                 ()=> {
                         localStorage.setItem('userappointment',JSON.stringify(this.userAppointment));
                         

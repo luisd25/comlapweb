@@ -1,8 +1,8 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {EmailValidator, EqualPasswordsValidator} from '../../theme/validators';
-import {BackandService} from 'angular2bknd-sdk';
 import {Router} from '@angular/router';
+import { ComlapService } from '../../comlap.service';
 
 @Component({
   selector: 'register',
@@ -22,7 +22,7 @@ export class Register {
 
   public submitted:boolean = false;
 
-  constructor(fb:FormBuilder, private backandService:BackandService, private router:Router) {
+  constructor(fb:FormBuilder, private comlapService:ComlapService, private router:Router) {
 
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
@@ -48,50 +48,28 @@ export class Register {
   }
 
   validateUserName(){
-    let filter =//filtro para el select (where clause)
-          [
-            {
-              fieldName: 'username',//nombre del campo
-              operator: 'equals',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
-              //remover comentario cuando se utilize el campo del formulario
-              value: this.username.value
-              //value: 'joannolasco05'//valor
-            }
-          ];
-
-      this.backandService.getList('users',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
+      this.comlapService.getList('users','username','eq',this.username.value)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(
                 data => {
                     console.log('lista de usuarios',data);
                     this.count= data.length;
                       
                 },
-                err => this.backandService.logError(err),
+                err => this.comlapService.logError(err),
                 ()=> this.validateEmail()
       );
     }
 
   validateEmail(){
     if(this.count == 0){
-      let filter =//filtro para el select (where clause)
-          [
-            {
-              fieldName: 'email',//nombre del campo
-              operator: 'equals',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
-              //remover comentario cuando se utilize el campo del formulario
-              value: this.email.value
-              //value: 'joannolasco05'//valor
-            }
-          ];
-
-      this.backandService.getList('users',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
+      this.comlapService.getList('users','email','eq',this.email.value)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(
                 data => {
                     console.log('lista de usuarios',data);
                     this.count= data.length;
                       
                 },
-                err => this.backandService.logError(err),
+                err => this.comlapService.logError(err),
                 ()=> this.registerUser()
       );
     } else {
@@ -102,7 +80,7 @@ export class Register {
 
   registerUser(){
     if(this.count == 0){
-      this.backandService.create('users', {
+      this.comlapService.create('users', {
         username: this.username.value,
         email: this.email.value,
         password: this.password.value
@@ -110,7 +88,7 @@ export class Register {
         data => {
           alert('Registro completado exitosamente!')
         },
-        err => this.backandService.logError(err),
+        err => this.comlapService.logError(err),
         () => this.router.navigate(['login'])
       );
       
