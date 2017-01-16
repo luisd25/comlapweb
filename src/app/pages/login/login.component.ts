@@ -39,7 +39,7 @@ export class Login {
   public onSubmit(values:Object):void {
     console.log('presione el boton');
     this.submitted = true;
-    // this._spinner.show();
+    this._spinner.show();
     if (this.form.valid) {// luego de que se llene el formulario
   
       this.comlapService.getList('users','username','eq',this.email.value)//nombre de la tabla,pagesiz,pagenumber,filtro
@@ -49,7 +49,7 @@ export class Login {
                     this.items = data;
                 },
                 err => this.comlapService.logError(err),
-                ()=> console.log('ok')
+                ()=> this.loginUser()
             );  
     }
   }

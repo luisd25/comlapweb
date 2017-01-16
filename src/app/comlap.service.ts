@@ -23,7 +23,7 @@ export class ComlapService {
         if (queryParams.length > 0){
             query = '?' + queryParams.join('&');
         }
-        console.log( query);
+        // console.log( query);
         return this.http.get(this.url + object + query, {
                         headers: this.authHeader
                     })
@@ -40,6 +40,25 @@ export class ComlapService {
         return this.http.post(this.url + object, bodyString, options) // ...using post request
                          .map((res:Response) => res.json()) // ...and calling .json() on the response to return data
                          .catch((error:any) => Observable.throw(error.json().error || 'Server error')); //...errors if any
+    }
+
+    public update(object: string, id: string, item: any, deep: boolean = false, returnObject: boolean = false) {
+        let data: string = JSON.stringify(item);
+        let query: string = '';
+        if (returnObject){
+            query += 'returnObject=true';
+        }
+        if (deep){
+            query += query ? '&deep = true' : 'deep=true';
+        }
+
+
+        return this.http.put(this.url + object + '/' + id + (query ? '?' + query : ''), data,
+            {
+                headers: this.authHeader
+            })
+            .retry(3)
+            .map((res:Response) => res.json())         
     }          
     
 

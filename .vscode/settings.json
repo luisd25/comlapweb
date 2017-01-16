@@ -1,3 +1,6 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib/"
+"typescript.tsdk": "node_modules/typescript/lib/",
+"vsicons.presets.jsonOfficial": true,
+"vsicons.presets.jsOfficial": true,
+"vsicons.presets.tsOfficial": true
 }

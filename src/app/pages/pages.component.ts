@@ -42,44 +42,26 @@ export class Pages implements CanActivate {
 
   ngOnInit() {
     let filter;
+    let fieldname;
+    let value = this.currentUser.username;
+    let operator = 'eq';
     if(this.currentUser.usertype.trim().toLowerCase()=='patient'){
-       filter =//filtro para el select (where clause)
-          [
-            {
-              fieldName: 'username',//nombre del campo
-              operator: 'contains',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
-              //remover comentario cuando se utilize el campo del formulario
-              value: this.currentUser.username
-              // value: 'jose'//valor
-            }
-          ]
-      ;
-
+       fieldname = 'username';
     }else{
-       filter =//filtro para el select (where clause)
-          [
-            {
-              fieldName: 'staffusername',//nombre del campo
-              operator: 'contains',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
-              //remover comentario cuando se utilize el campo del formulario
-              value: this.currentUser.username
-              // value: 'jose'//valor
-            }
-          ]
-      ;
-
+      fieldname = 'staffusername';
     }
       //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/comlapService
-      this.comlapService.getList(this.currentUser.usertype,null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
+      this.comlapService.getList(this.currentUser.usertype,fieldname,operator,value)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(
                 data => {
                     console.log('usuario completo:',data);
-                    this.fullUser = data[0];
+                    this.fullUser = data;
                 },
                 err => this.comlapService.logError(err),
                 ()=> {
                         localStorage.setItem('fullUser',JSON.stringify(this.fullUser));
                         this.loadUserData();
+                        // console.log('loaded full user');
                       }
             );
   }
@@ -89,39 +71,21 @@ export class Pages implements CanActivate {
   }
 
   loadUserData(){
-      let filter
-      console.log(this.fullUser.patientid);
+      let fieldname;
+      let value;
+      let operator = 'eq';
+      // console.log(this.fullUser.patientid);
       if(this.currentUser.usertype.trim().toLowerCase()=='patient'){
-      // console.log('probando:',this.fullUser);
-      filter =//filtro para el select (where clause)
-          [
-            {
-              fieldName: 'patientid',//nombre del campo
-              operator: 'equals',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
-              //remover comentario cuando se utilize el campo del formulario
-              value: this.fullUser.patientid
-              // value: 'jose'//valor
-            }
-          ]
-      ;
+      fieldname = 'patientid';
+      value = this.fullUser.patientid;
+      
     }else{
-      filter =//filtro para el select (where clause)
-          [
-            {
-              fieldName: 'staffid',//nombre del campo
-              operator: 'contains',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
-              //remover comentario cuando se utilize el campo del formulario
-              value: this.fullUser.staffid
-              // value: 'jose'//valor
-            }
-          ]
-      ;
+      fieldname = 'staffid';
+      value = this.fullUser.staffid;
 
     }
 
-      
-      //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/comlapService
-      this.comlapService.getList('cases',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
+      this.comlapService.getList('cases',fieldname,operator,value)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(
                 data => {
                     console.log('casos del usuario:',data);
@@ -138,20 +102,22 @@ export class Pages implements CanActivate {
   }
 
   loadUserAppointment(){
-      console.log(this.fullUser.patientid);
-      let filter =//filtro para el select (where clause)
-          [
-            {
-              fieldName: 'patientid',//nombre del campo
-              operator: 'in',//operador, si es un numero se usa equals, si es string contains, ahi mas variantes
-              //remover comentario cuando se utilize el campo del formulario
-              value: this.fullUser.patientid
-              // value: 'jose'//valor
-            }
-          ]
-      ;
+       let fieldname;
+      let value;
+      let operator = 'eq';
+
+      if(this.currentUser.usertype.trim().toLowerCase()=='patient'){
+      fieldname = 'patientid';
+      value = this.fullUser.patientid;
+      
+      }else{
+        fieldname = 'staffid';
+        value = this.fullUser.staffid;
+
+      }
+        
       //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/comlapService
-      this.comlapService.getList('appointment',null,null,filter)//nombre de la tabla,pagesiz,pagenumber,filtro
+      this.comlapService.getList('appointment',fieldname,operator,value)//nombre de la tabla,pagesiz,pagenumber,filtro
             .subscribe(
                 data => {
                     console.log('appointment del usuario:',data);
