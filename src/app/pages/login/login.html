@@ -1,7 +1,8 @@
 <div class="auth-main">
   <div class="auth-block">
-    <h1>Sign in to comlap</h1>
-    <a routerLink="/register" class="auth-link">New to Comlap? Sign up!</a>
+    <img src="../../../assets/img/logo_white.png">
+    <h1>Inicie Sesion</h1>
+    <a routerLink="/register" class="auth-link">Nuevo en Comlap? Registrece!</a>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
       <div class="form-group row" [ngClass]="{'has-error': (!email.valid && email.touched), 'has-success': (email.valid && email.touched)}">
