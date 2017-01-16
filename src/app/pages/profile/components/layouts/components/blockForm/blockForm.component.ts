@@ -16,7 +16,8 @@ export class BlockForm {
   public lastname:AbstractControl;
   
   constructor(fb:FormBuilder,private comlapService:ComlapService) {
-    this.fullUser = JSON.parse(localStorage.getItem('fullUser'));
+    let data = JSON.parse(localStorage.getItem('fullUser'));
+    this.fullUser = data[0];
     // this.form = fb.group({
     //   'inputEmail': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
     //   'inputUserName': ['', Validators.compose([Validators.required, Validators.minLength(3)])]
@@ -33,7 +34,8 @@ export class BlockForm {
       'email': [this.fullUser.email],
       'username': [this.fullUser.username]
     });
-
+    // console.log('usuario completo: ',this.fullUser);
+    // console.log('Mi nombre de usuario: ',this.fullUser.username);
     this.firstname = this.form.controls['firstname'];
     this.lastname = this.form.controls['lastname'];
     this.email = this.form.controls['email'];
@@ -53,6 +55,7 @@ export class BlockForm {
 
 
        let updateobject = {	
+        id:this.fullUser.id,
         fileid: this.fullUser.fileid,
         sufferid: this.fullUser.sufferid,
         userid: this.fullUser.userid,
@@ -76,7 +79,7 @@ export class BlockForm {
         username: this.fullUser.username
     }
 
-      this.comlapService.update('patient', this.fullUser.patientid,updateobject,false,true)
+      this.comlapService.update('patient', this.fullUser.id,updateobject)
         .subscribe(
                 data => {
                   console.log(data);

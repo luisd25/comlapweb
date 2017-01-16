@@ -53,7 +53,7 @@ export class ComlapService {
         }
 
 
-        return this.http.put(this.url + object + '/' + id + (query ? '?' + query : ''), data,
+        return this.http.patch(this.url + object + '/' + id + (query ? '?' + query : ''), data,
             {
                 headers: this.authHeader
             })
