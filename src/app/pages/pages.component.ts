@@ -76,12 +76,13 @@ export class Pages implements CanActivate {
       let operator = 'eq';
       // console.log(this.fullUser.patientid);
       if(this.currentUser.usertype.trim().toLowerCase()=='patient'){
+        
       fieldname = 'patientid';
-      value = this.fullUser.patientid;
-      
+      value = this.fullUser[0].id;
+      // console.log('soy un paciente',fieldname,value);
     }else{
-      fieldname = 'staffid';
-      value = this.fullUser.staffid;
+      fieldname = 'hospitalid';
+      value = this.fullUser[0].hospitalid;
 
     }
 
@@ -108,11 +109,11 @@ export class Pages implements CanActivate {
 
       if(this.currentUser.usertype.trim().toLowerCase()=='patient'){
       fieldname = 'patientid';
-      value = this.fullUser.patientid;
+      value = this.fullUser[0].id;
       
       }else{
         fieldname = 'staffid';
-        value = this.fullUser.staffid;
+        value = this.fullUser[0].id;
 
       }
         

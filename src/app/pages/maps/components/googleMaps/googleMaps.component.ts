@@ -15,6 +15,7 @@ export class GoogleMaps {
   lastfilter:any;
   isPatient:boolean = true;
   userType:string = '';
+  fullUser:any;
 
   settings = {
     add: {
@@ -65,6 +66,7 @@ export class GoogleMaps {
   usercases:any;
   constructor(private _elementRef:ElementRef,private comlapService:ComlapService,private router:Router) {
       this.userType = JSON.parse(localStorage.getItem('userType'));
+      this.fullUser = JSON.parse(localStorage.getItem('fullUser'));
       if(this.userType.trim().toLowerCase()=='patient'){
         this.isPatient = true;
       }
@@ -76,6 +78,7 @@ export class GoogleMaps {
   
 
   ngAfterViewInit() {
+    // 
 
       var infoWindow = new google.maps.InfoWindow();
 
@@ -118,22 +121,23 @@ export class GoogleMaps {
 
         var self = this;
         
-        let filter =
-                [
-                    {
-                      fieldName: "Provincia",
-                      operator: "contains",
-                      value: "SANTO DOMINGO"
-                    },
-                    {
-                      fieldName: "latitude",
-                      operator: "greaterThan",
-                      value: "0"
-                    }
-                ]
-            ;
 
-            this.comlapService.getList('hospital',100,null,filter)
+        // let filter =
+        //         [
+        //             {
+        //               fieldName: "Provincia",
+        //               operator: "contains",
+        //               value: "SANTO DOMINGO"
+        //             },
+        //             {
+        //               fieldName: "latitude",
+        //               operator: "greaterThan",
+        //               value: "0"
+        //             }
+        //         ]
+        //     ;
+
+          this.comlapService.getList('hospital','Provincia','eq','SANTO DOMINGO')
            .subscribe(
                data => {
                    console.log(data);
@@ -175,27 +179,27 @@ export class GoogleMaps {
   }
 
   onDeleteConfirm(event): void {
-      if(window.confirm('Are you sure you want to delete?')){
-        this.comlapService.delete('cases',event.data.caseid).subscribe(
-        data=>{
+      // if(window.confirm('Are you sure you want to delete?')){
+      //   this.comlapService.delete('cases',event.data.caseid).subscribe(
+      //   data=>{
 
-        },
-        err =>{this.comlapService.logError(err);event.confirm.resolve();},
-        ()=> {console.log('Success delete'); event.confirm.resolve();}
-        );
-      }
-      else{
-          event.confirm.reject();
-      }
+      //   },
+      //   err =>{this.comlapService.logError(err);event.confirm.resolve();},
+      //   ()=> {console.log('Success delete'); event.confirm.resolve();}
+      //   );
+      // }
+      // else{
+      //     event.confirm.reject();
+      // }
 
   }
     onCreteConfirm(event){
-      console.log(event);
+      console.log(this.fullUser[0].id);
       this.comlapService.create('cases', {
         casetitle: event.newData.casetitle,
         casedescription: event.newData.casedescription,
         hospitalid:this.lastfilter,
-        patientid:this.usercases[0].patientid
+        patientid:this.fullUser[0].id
       }).subscribe(
         data => {
           console.log('caso agregado');
