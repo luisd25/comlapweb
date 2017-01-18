@@ -13,14 +13,14 @@
 
 @mixin svg-icon-class($iconName, $width:'', $height:'') {
   .#{'i-' + $iconName} {
-    @include svg-icon($images-root + $iconName + '.svg', $width, $height);
+    @include svg-icon($images-root + $iconName + '.png', $width, $height);
   }
 }
 
-@include svg-icon-class('face', 80, 80);
-@include svg-icon-class('money', 80, 80);
-@include svg-icon-class('person', 80, 80);
-@include svg-icon-class('refresh', 80, 80);
+@include svg-icon-class('android-contacts', 80, 80);
+@include svg-icon-class('android-clock', 80, 80);
+@include svg-icon-class('android-book', 80, 80);
+@include svg-icon-class('android-location', 80, 80);
 
 @mixin png-icon($url, $width, $height) {
   display: inline-block;
