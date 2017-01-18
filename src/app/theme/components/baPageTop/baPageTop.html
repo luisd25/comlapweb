@@ -3,10 +3,7 @@
   <a routerLink="/pages/dashboard" class="al-logo clearfix"><span>C</span>omlap</a>
   <a href (click)="toggleMenu()" class="collapse-menu-link ion-navicon"></a>
 
-  <div class="search">
-    <i class="ion-ios-search-strong" ng-click="startSearch()"></i>
-    <input id="searchInput" type="text" placeholder="Search for...">
-  </div>
+
 
   <div class="user-profile clearfix">
     <div class="dropdown al-user-profile">
@@ -16,10 +13,9 @@
       <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
         <li class="dropdown-item"><i class="dropdown-arr"></i></li>
         <li class="dropdown-item"><a href><i class="fa fa-user"></i>Profile</a></li>
-        <li class="dropdown-item"><a href><i class="fa fa-cog"></i>Settings</a></li>
         <li onclick="signout()" class="dropdown-item"><a href class="signout"><i class="fa fa-power-off"></i>Sign out</a></li>
       </ul>
     </div>
-    <ba-msg-center></ba-msg-center>
+    
   </div>
 </div>

@@ -39,8 +39,6 @@ export class PieChartService {
     //     icon: 'refresh',
     //   }
     // ];
-    // console.log('pie:',this.hospitalList);
-    // console.log(this.hospitalList.length);
     return [
       {
         color: pieColor,
@@ -50,18 +48,13 @@ export class PieChartService {
       }, {
         color: pieColor,
         description: 'Purchases',
-        stats: this.hospitalList.length,
+        stats: this.usercases.length,
         icon: 'android-clock',
       }, {
         color: pieColor,
         description: 'Active Users',
-        stats: '178,391',
+        stats: this.userappointment.length,
         icon: 'android-book',
-      }, {
-        color: pieColor,
-        description: 'Returned',
-        stats: '32,592',
-        icon: 'android-contacts',
       }
     ];
   }
