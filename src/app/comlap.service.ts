@@ -59,6 +59,16 @@ export class ComlapService {
             })
             .retry(3)
             .map((res:Response) => res.json())         
+    }
+    public delete(object: string, id: string) {
+        let headers = this.authHeader;
+        headers.append('Content-Type', 'application/json');  
+        return this.http.delete(
+            this.url  + object + '/' + id,
+            {
+                headers: headers
+            }
+        );   
     }          
     
 

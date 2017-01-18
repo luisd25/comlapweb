@@ -16,6 +16,7 @@ export class GoogleMaps {
   isPatient:boolean = true;
   userType:string = '';
   fullUser:any;
+  currentUser:any;
 
   settings = {
     add: {
@@ -34,9 +35,9 @@ export class GoogleMaps {
       confirmDelete: true
     },
     columns: {
-      caseid: {
+      id: {
         title: 'ID',
-        type: 'number'
+        type: 'string'
       },
       casetitle: {
         title: 'Titulo',
@@ -67,6 +68,7 @@ export class GoogleMaps {
   constructor(private _elementRef:ElementRef,private comlapService:ComlapService,private router:Router) {
       this.userType = JSON.parse(localStorage.getItem('userType'));
       this.fullUser = JSON.parse(localStorage.getItem('fullUser'));
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       if(this.userType.trim().toLowerCase()=='patient'){
         this.isPatient = true;
       }
@@ -120,32 +122,8 @@ export class GoogleMaps {
         // To add the marker to the map, call setMap();
 
         var self = this;
-        
-
-        // let filter =
-        //         [
-        //             {
-        //               fieldName: "Provincia",
-        //               operator: "contains",
-        //               value: "SANTO DOMINGO"
-        //             },
-        //             {
-        //               fieldName: "latitude",
-        //               operator: "greaterThan",
-        //               value: "0"
-        //             }
-        //         ]
-        //     ;
-
-          this.comlapService.getList('hospital','Provincia','eq','SANTO DOMINGO')
-           .subscribe(
-               data => {
-                   console.log(data);
-                   this.hospitalList = data;
-               },
-               err => this.comlapService.logError(err),
-               ()=> {
-                    for(let location of this.hospitalList){
+        this.hospitalList = JSON.parse(localStorage.getItem('hospitalmarker'));
+         for(let location of this.hospitalList){
 
                         var marker = new google.maps.Marker({
                           position: new google.maps.LatLng(location.latitude,location.longitude),
@@ -159,12 +137,8 @@ export class GoogleMaps {
                             // self.source.add()
                       
                     });
-                    }
-                      
                   }
 
-            
-           );
       }
            catch (error) {
              console.log('map does not load');
@@ -179,39 +153,73 @@ export class GoogleMaps {
   }
 
   onDeleteConfirm(event): void {
-      // if(window.confirm('Are you sure you want to delete?')){
-      //   this.comlapService.delete('cases',event.data.caseid).subscribe(
-      //   data=>{
+      if(window.confirm('Are you sure you want to delete?')){
+        this.comlapService.delete('cases',event.data.id).subscribe(
+        data=>{
 
-      //   },
-      //   err =>{this.comlapService.logError(err);event.confirm.resolve();},
-      //   ()=> {console.log('Success delete'); event.confirm.resolve();}
-      //   );
-      // }
-      // else{
-      //     event.confirm.reject();
-      // }
+        },
+        err =>{this.comlapService.logError(err);event.confirm.resolve();},
+        ()=> {console.log('Success delete'); event.confirm.resolve();this.updateList();}
+        );
+      }
+      else{
+          event.confirm.reject();
+      }
 
   }
     onCreteConfirm(event){
+      // console.log(event.data);
       console.log(this.fullUser[0].id);
       this.comlapService.create('cases', {
         casetitle: event.newData.casetitle,
         casedescription: event.newData.casedescription,
         hospitalid:this.lastfilter,
-        patientid:this.fullUser[0].id
+        patientid:this.fullUser[0].id,
+        casestartdate: event.newData.casestartdate,
+        caseenddate: event.newData.caseenddate
+
       }).subscribe(
         data => {
           console.log('caso agregado');
         },
         err => {this.comlapService.logError(err);event.confirm.reject();},
-        () => {event.confirm.resolve();console.log('created');}
+        () => {event.confirm.resolve();console.log('created'); this.updateList();}
       );   
   }
   onRowSelected(event){
     console.log('fila:',event);
-    localStorage.setItem('casefilter',event.data.caseid);
+    localStorage.setItem('casefilter',event.data.id);
     this.router.navigate(['pages/maps/appointment']);
+
+  }
+   updateList(){
+       let fieldname;
+      let value;
+      let operator = 'eq';
+
+      if(this.currentUser.usertype.trim().toLowerCase()=='patient'){
+      fieldname = 'patientid';
+      value = this.fullUser[0].id;
+      
+      }else{
+        fieldname = 'staffid';
+        value = this.fullUser[0].id;
+
+      }
+        
+      //Los metodos disponibles estan definidos en node_modules/angular2bknd-sdk/comlapService
+      this.comlapService.getList('cases',fieldname,operator,value)//nombre de la tabla,pagesiz,pagenumber,filtro
+            .subscribe(
+                data => {
+                    console.log('casos del usuario:',data);
+                    this.usercases = data;
+                },
+                err => this.comlapService.logError(err),
+                ()=> {
+                        localStorage.setItem('usercases',JSON.stringify(this.usercases));
+                        
+                      }
+            );
 
   }
 }

@@ -35,6 +35,7 @@ export class Pages implements CanActivate {
   fullUser:any;
   userCases:any;
   userAppointment:any;
+  public hospitalList: any;
 
   constructor(private user: UserService,private comlapService:ComlapService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -127,9 +128,23 @@ export class Pages implements CanActivate {
                 err => this.comlapService.logError(err),
                 ()=> {
                         localStorage.setItem('userappointment',JSON.stringify(this.userAppointment));
+                        this.loadMarker();
                         
                       }
             );
 
+  }
+  loadMarker(){
+    this.comlapService.getList('hospital','Provincia','eq','SANTO DOMINGO')
+           .subscribe(
+               data => {
+                   console.log(data);
+                   this.hospitalList = data;
+               },
+               err => this.comlapService.logError(err),
+               ()=> { localStorage.setItem('hospitalmarker',JSON.stringify(this.hospitalList)); console.log('market loaded'); }
+
+            
+           );
   }
 }
