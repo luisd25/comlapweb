@@ -47,12 +47,12 @@ export class PieChartService {
         icon: 'android-location',
       }, {
         color: pieColor,
-        description: 'Purchases',
+        description: 'Casos',
         stats: this.usercases.length,
         icon: 'android-clock',
       }, {
         color: pieColor,
-        description: 'Active Users',
+        description: 'Citas',
         stats: this.userappointment.length,
         icon: 'android-book',
       }

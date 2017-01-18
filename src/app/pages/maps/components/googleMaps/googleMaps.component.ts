@@ -127,7 +127,7 @@ export class GoogleMaps {
 
                         var marker = new google.maps.Marker({
                           position: new google.maps.LatLng(location.latitude,location.longitude),
-                          title:location.NombreCentro,
+                          title:location.NombreCentro +' '+ location.DireccionCentro,
                           animation: google.maps.Animation.DROP,
                           map:map
                         });
